@@ -3,13 +3,6 @@
 -- 26/05/2013
 --
 
--- One-line commands:
--- CREATE TABLE 'discipline' ('pkid' INTEGER PRIMARY KEY  NOT NULL , 'name' VARCHAR NOT NULL);
--- CREATE TABLE 'difficulty' ('pkid' INTEGER PRIMARY KEY  NOT NULL , 'name' VARCHAR NOT NULL);
--- CREATE TABLE 'language' ('pkid' INTEGER PRIMARY KEY  NOT NULL , 'name' VARCHAR NOT NULL);
--- CREATE TABLE 'questions' ('pkid' INTEGER PRIMARY KEY  NOT NULL , 'statement' VARCHAR NOT NULL, 'answers' VARCHAR NOT NULL , 'right' INTEGER NOT NULL, 'language' INTEGER NOT NULL, 'difficulty' INTEGER NOT NULL, 'discipline' INTEGER NOT NULL, FOREIGN KEY(language) REFERENCES language(pkid), FOREIGN KEY(difficulty) REFERENCES difficulty(pkid), FOREIGN KEY(discipline) REFERENCES discipline(pkid));
-
-
 DROP TABLE IF EXISTS 'discipline';
 DROP TABLE IF EXISTS 'difficulty';
 DROP TABLE IF EXISTS 'language';
@@ -86,42 +79,3 @@ CREATE TABLE 'scoreboard' (
 INSERT INTO 'scoreboard' ('game_mode', 'value') VALUES ('machina', 0);
 INSERT INTO 'scoreboard' ('game_mode', 'value') VALUES ('tempus', 0);
 INSERT INTO 'scoreboard' ('game_mode', 'value') VALUES ('simius', 0);
-
-
-
-
-
-/**************/
-/* QUERIES */
-/**************/
-
--- Selects the answers (with the correct one) of a particular question (pkid)
-SELECT a.text, aq.right FROM answers a, ans_que aq, questions q
-WHERE a.pkid = aq.answer
-AND q.pkid = aq.question
-AND q.pkid = 1; --Question ID
-
--- Selects all the questions
-SELECT q.statement, lang.name, dif.name, dis.name
-FROM questions q, language lang, difficulty dif, discipline dis
-WHERE q.language = lang.pkid
-AND q.difficulty = dif.pkid
-AND q.discipline = dis.pkid;
-
--- Selects the spanish questions
-SELECT q.statement, lang.name, dif.name, dis.name
-FROM questions q, language lang, difficulty dif, discipline dis
-WHERE q.language = lang.pkid
-AND lang.name LIKE "Spanish"
-AND q.difficulty = dif.pkid
-AND q.discipline = dis.pkid;
-
--- ALL the filters
-SELECT q.statement, lang.name, dif.name, dis.name
-FROM questions q, language lang, difficulty dif, discipline dis
-WHERE q.language = lang.pkid
-AND lang.name LIKE "Spanish"
-AND dif.name LIKE "Normal"
-AND dis.name LIKE "Politics"
-AND q.difficulty = dif.pkid
-AND q.discipline = dis.pkid;
